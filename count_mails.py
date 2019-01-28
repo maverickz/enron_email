@@ -17,7 +17,7 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 
 
-class Execute(object):
+class CountEmails(object):
   def __init__(self):
     self.database = Database()
     self.database.create_tables()
@@ -72,12 +72,13 @@ class Execute(object):
     self.database.insert("recipient", rrows)
 
 
+  # Total number of mails in the system
   def total_number_of_emails(self):
     logger.info("Total number of emails(without duplicates, assuming emails with same MailId as duplicates)")
     for count in self.database.run_query("""SELECT COUNT(*) FROM email;"""):
       logger.info(count)
 
-
+  # Totals emails received per user(includes users within and outside enron)
   def emails_received_per_person(self):
     logger.info("Number of emails received per person")
     for receiver, emails_received in self.database.run_query(
@@ -90,7 +91,7 @@ class Execute(object):
       """):
       logger.info("{}, {}".format(receiver, emails_received))
 
-
+  # Fastest email responses(includes users within and outside enron)
   def fast_responses(self):
     logger.info("Fastest responses")
     logger.info("-----------------")
@@ -126,7 +127,7 @@ class Execute(object):
       return False
 
 
-  # Run Full Job
+  # Run full job
   def execute(self):
     mail_dir = os.getcwd() + "/maildir"
     if self.check_for_emails():
@@ -134,11 +135,8 @@ class Execute(object):
 
 
 if __name__ == "__main__":
-  ex = Execute()
-  ex.execute()
-  ex.total_number_of_emails()
-  ex.emails_received_per_person()
-  ex.fast_responses()
-  
-
-
+  count_emails = CountEmails()
+  count_emails.execute()
+  count_emails.total_number_of_emails()
+  count_emails.emails_received_per_person()
+  count_emails.fast_responses()

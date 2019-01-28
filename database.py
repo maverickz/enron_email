@@ -40,6 +40,7 @@ class Database(object):
   def get_config(self):
     return yaml.load(open(self.config))
 
+  # Drop and recreate tables
   def create_tables(self):
     for name, ddl in self.config_yaml.get('ddl').items():
       if 'drop' in name:
@@ -51,6 +52,7 @@ class Database(object):
       except InternalError as e:
         logger.error(e)
 
+  # Insert row to appropriate table
   def insert(self, table=None, rows=None):
     if rows is None or table is None:
       logger.error("Table {} not found".format(table))
@@ -90,17 +92,17 @@ class Database(object):
       return None
 
   def parse_mail(self, mail):
-      row = {}
+    row = {}
 
-      row['to'] = sorted([elem[1] for elem in mail.to])
-      row['cc'] = sorted([elem[1] for elem in mail.cc])
-      row['from'] = mail.from_[0][1]
-      row['bcc'] = sorted([elem[1] for elem in mail.bcc])
-      row['subject'] = mail.subject
-      row['message_id'] = mail.message_id
-      row['date_created'] = mail.date
-      row['body_md5'] = hashlib.md5(mail.body).hexdigest() if mail.body else None
-      row['sub_md5'] = hashlib.md5(
-          mail.subject.encode('utf-8').lower().replace("re:", "").strip()).hexdigest() if mail.subject else None
-      logger.info("DB row: {}".format(row))
-      return row
+    row['to'] = sorted([elem[1] for elem in mail.to])
+    row['cc'] = sorted([elem[1] for elem in mail.cc])
+    row['from'] = mail.from_[0][1]
+    row['bcc'] = sorted([elem[1] for elem in mail.bcc])
+    row['subject'] = mail.subject
+    row['message_id'] = mail.message_id
+    row['date_created'] = mail.date
+    row['body_md5'] = hashlib.md5(mail.body).hexdigest() if mail.body else None
+    row['sub_md5'] = hashlib.md5(
+        mail.subject.encode('utf-8').lower().replace("re:", "").strip()).hexdigest() if mail.subject else None
+    logger.debug("DB row: {}".format(row))
+    return row
