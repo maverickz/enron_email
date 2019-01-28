@@ -1,0 +1,7 @@
+ipaddress==1.0.22
+mail-parser==3.8.1
+PyMySQL==0.9.3
+python-dateutil==2.7.5
+PyYAML==3.13
+simplejson==3.16.0
+six==1.12.0

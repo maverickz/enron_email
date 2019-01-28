@@ -7,4 +7,7 @@
 wget https://www.cs.cmu.edu/~./enron/enron_mail_20150507.tar.gz && \
 tar xvzf enron_mail_20150507.tar.gz && \
 rm -rf enron_mail_20150507.tar.gz && \
+virtualenv venv && \
+source venv/bin/activate && \
+pip install -r requirements.txt && \ 
 python count_mails1.py
