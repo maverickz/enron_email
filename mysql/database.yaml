@@ -1,0 +1,30 @@
+ddl:
+  drop_email: "DROP TABLE IF EXISTS email;"
+  create_email: "CREATE TABLE `email` (
+    `MessageId` varchar(250) NOT NULL UNIQUE DEFAULT '',
+    `Sender` varchar(150) DEFAULT NULL,
+    `Subject` varchar(400) DEFAULT NULL,
+    `DateCreated` datetime DEFAULT NULL,
+    `BodyMd5` varchar(55) DEFAULT NULL,
+    `SubjectMd5` varchar(55) DEFAULT NULL,
+    PRIMARY KEY (`MessageId`),
+    INDEX `email_idx_subjectmd5_sender` (`SubjectMd5`,`Sender`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;"
+
+  drop_recipient: "DROP TABLE IF EXISTS recipient;"
+  create_recipient: "CREATE TABLE `recipient` (
+  `Id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `MessageId` varchar(250) NOT NULL DEFAULT '',
+  `Sender` varchar(150) DEFAULT NULL,
+  `Receiver` varchar(150) DEFAULT '',
+  `isTo` tinyint(1) DEFAULT NULL,
+  `isCc` tinyint(1) DEFAULT NULL,
+  `isBcc` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;"
+
+config:
+  user: test
+  pass: test
+  port: 3306
+  schema: enron
